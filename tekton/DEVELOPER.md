@@ -1,37 +1,34 @@
 # Developer
 
-TODO
-
 ## Fetch external resources
-
-The script and path to the dir should be reviewed, depending on if we will add/include the generated resources part of the workflow `promise` or `resource`
-and corresponding oci image !
 
 To fetch the Tekton & Dashboard manifests, execute the following command
 ```shell
 ./scripts/fetch-deps <TEKTON_VERSION> <DASHBOARD_VERSION>
 ```
+If no versions are passed as argument, then we download the latest release file for Tekton and the Dashboard. If you prefer to download a specific vesion of Tekton, then pass its version to the script
+```shell
+./scripts/fetch-deps v0.68.1
+```
+**NOTE**: The Tekton file downloaded will be suffixed under `./dependencies` with the version `tekton-v0.68.1.yaml`
 
 ## Pipeline image
 
-To build the image used by the workflows/resource/configure:
+To build the image used by the `workflows/resource/configure`, execute the following command
 ```
 cd workflows/resource-configure
-podman build -t tekton-configure:0.1.0 . && kind load docker-image tekton-configure:0.1.0 -n kratix
+podman build -t tekton-configure:0.1.0 .
 ```
 
-TODO: to be reviewed
-
-To load the image to the local kind platform cluster:
+To load the image to a local kind platform cluster:
 ```
-./scripts/pipeline-image load
+kind load docker-image tekton-configure:0.1.0 -n <KIND_NODE_NAME>
 ```
 
-To push the image to ghcr.io:
+To push the image to `ghcr.io`:
 ```
 ./scripts/pipeline-image push
 ```
-
 
 ## Testing
 To test the promise install kratix, and then:
